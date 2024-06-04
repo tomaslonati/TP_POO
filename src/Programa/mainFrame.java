@@ -9,6 +9,10 @@ import Programa.View.ClienteFrame;
 import Programa.View.PedidoFrame;
 import Programa.View.AutoparteFrame;
 import Programa.View.VentaFrame;
+import Programa.View.agregarCliente;
+import Programa.View.listaClientes;
+
+import Programa.View.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,73 +20,108 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class mainFrame extends JFrame {
-	
-	private static final long serialVersionUID = 1L;
-	private JPanel jContentPane = null;
-	
-	private Empresa E;
 
+    private static final long serialVersionUID = 1L;
+    private JPanel jContentPane = null;
+
+    private Empresa E;
 
     // Constructor
     public mainFrame() {
-    	E = E.recuperarse();
+        E = E.recuperarse();
         ListaClientes listaClientes = E.getClientes();
         ListaVentas listaVentas = E.getVentas();
         ListaAutopartes listaAutopartes = E.getAutopartes();
         ListaPedidos listaPedidos = E.getPedidos();
-    	initialize();
+        initialize();
+
         // Configuración de la ventana 
         setTitle("Sistema de Gestión");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Crear componentes
-        JPanel panel = new JPanel();
-        JButton abmClientes = new JButton("Administrar CLIENTES");
-        JButton abmPedidos = new JButton("Administrar PEDIDOS");
-        JButton abmAutopartes = new JButton("Administrar AUTOPARTES");
-        JButton registrarVenta = new JButton("Agregar Venta");
+        // Crear barra de menú
+        JMenuBar menuBar = new JMenuBar();
 
-        // Agregar componentes al panel
-        panel.add(abmClientes);
-        panel.add(abmPedidos);
-        panel.add(abmAutopartes);
-        panel.add(registrarVenta);
+        // Crear menús
+        JMenu menuClientes = new JMenu("Clientes");
+        JMenu menuPedidos = new JMenu("Pedidos");
+        JMenu menuAutopartes = new JMenu("Autopartes");
+        JMenu menuVentas = new JMenu("Ventas");
 
-        // Agregar panel a la ventana
-        add(panel, BorderLayout.CENTER);
+        // Crear ítems de menú
+        JMenuItem itemClientes = new JMenuItem("Administrar CLIENTES");
+        JMenuItem verClientes = new JMenuItem("Ver lista de clientes");
+        JMenuItem addClientes = new JMenuItem("Agregar Cliente");
+        
+        JMenuItem itemPedidos = new JMenuItem("Administrar PEDIDOS");
+        JMenuItem itemAutopartes = new JMenuItem("Administrar AUTOPARTES");
+        JMenuItem itemVentas = new JMenuItem("Agregar Venta");
+
+        // Agregar ítems a los menús
+        menuClientes.add(itemClientes);
+        menuClientes.add(verClientes);
+        menuClientes.add(addClientes);
+        
+        menuPedidos.add(itemPedidos);
+        menuAutopartes.add(itemAutopartes);
+        menuVentas.add(itemVentas);
+
+        // Agregar menús a la barra de menú
+        menuBar.add(menuClientes);
+        menuBar.add(menuPedidos);
+        menuBar.add(menuAutopartes);
+        menuBar.add(menuVentas);
+
+        // Configurar la barra de menú en el frame
+        setJMenuBar(menuBar);
 
         // Vincular manejadores de eventos
-        	
-         	//al hacer click en el boton, abrir la ventana del ABM
-        abmClientes.addActionListener(new ActionListener() {
+        itemClientes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ClienteFrame(listaClientes).setVisible(true);
             }
         });
-        /*
-        abmPedidos.addActionListener(new ActionListener() {
+        
+        // Vincular manejadores de eventos
+        addClientes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new agregarCliente(listaClientes).setVisible(true);
+            }
+        });
+        
+        // Vincular manejadores de eventos
+        verClientes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new listaClientes(listaClientes).setVisible(true);
+            }
+        });
+  
+
+        itemPedidos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new PedidoFrame(listaPedidos).setVisible(true);
             }
         });
 
-        abmAutopartes.addActionListener(new ActionListener() {
+        itemAutopartes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new AutoparteFrame(listaAutopartes).setVisible(true);
             }
         });
 
-        registrarVenta.addActionListener(new ActionListener() {
+        itemVentas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new VentaFrame(listaVentas).setVisible(true);
             }
-        });*/
+        });
     }
 
     // Método principal para ejecutar la aplicación
@@ -94,20 +133,20 @@ public class mainFrame extends JFrame {
             }
         });
     }
-    /**
-	 * This method initializes this
-	 * 
-	 * @return void
-	 */
-	private void initialize() {
-		this.addWindowListener(new java.awt.event.WindowAdapter() {
-			public void windowClosing(java.awt.event.WindowEvent e) {
-				if(E.guardarse())
-					JOptionPane.showMessageDialog(null, "GUARDADO OK") ;
-				else
-					JOptionPane.showMessageDialog(null, "ERROR AL GUARDAR");
-			}
-		});
-	}
-}
 
+    /**
+     * This method initializes this
+     *
+     * @return void
+     */
+    private void initialize() {
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                if (E.guardarse())
+                    JOptionPane.showMessageDialog(null, "GUARDADO OK");
+                else
+                    JOptionPane.showMessageDialog(null, "ERROR AL GUARDAR");
+            }
+        });
+    }
+}
