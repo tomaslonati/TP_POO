@@ -8,7 +8,7 @@ public class Datos {
 	{
 		try
 		{
-			FileOutputStream fout = new FileOutputStream("Agencia.bin");
+			FileOutputStream fout = new FileOutputStream("Empresa.bin");
 			ObjectOutputStream out = new ObjectOutputStream(fout);
 			//Serialization:
 			out.writeObject(obj);       
@@ -26,7 +26,7 @@ public class Datos {
 		Object obj;
 		try
 		{
-			FileInputStream fi = new FileInputStream("Agencia.bin");
+			FileInputStream fi = new FileInputStream("Empresa.bin");
 			ObjectInputStream fs = new ObjectInputStream(fi);
 			// Deserialazation:
 			obj = fs.readObject();

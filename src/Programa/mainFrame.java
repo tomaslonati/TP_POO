@@ -1,5 +1,6 @@
 package Programa;
 
+import Programa.Model.*;
 import Programa.Model.ListaClientes;
 import Programa.Model.ListaPedidos;
 import Programa.Model.ListaAutopartes;
@@ -15,19 +16,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class mainFrame extends JFrame {
-    private ListaClientes listaClientes;
-    private ListaPedidos listaPedidos;
-    private ListaAutopartes listaAutopartes;
-    private ListaVentas listaVentas;
+	
+	private static final long serialVersionUID = 1L;
+	private JPanel jContentPane = null;
+	
+	private Empresa E;
+
 
     // Constructor
     public mainFrame() {
-        listaClientes = new ListaClientes();
-        listaPedidos = new ListaPedidos();
-        listaAutopartes = new ListaAutopartes();
-        listaVentas = new ListaVentas();
-
-        // Configuración de la ventana
+    	E = E.recuperarse();
+        ListaClientes listaClientes = E.getClientes();
+        ListaVentas listaVentas = E.getVentas();
+        ListaAutopartes listaAutopartes = E.getAutopartes();
+        ListaPedidos listaPedidos = E.getPedidos();
+    	initialize();
+        // Configuración de la ventana 
         setTitle("Sistema de Gestión");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,5 +94,20 @@ public class mainFrame extends JFrame {
             }
         });
     }
+    /**
+	 * This method initializes this
+	 * 
+	 * @return void
+	 */
+	private void initialize() {
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				if(E.guardarse())
+					JOptionPane.showMessageDialog(null, "GUARDADO OK") ;
+				else
+					JOptionPane.showMessageDialog(null, "ERROR AL GUARDAR");
+			}
+		});
+	}
 }
 
