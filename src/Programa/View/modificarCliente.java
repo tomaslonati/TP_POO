@@ -50,7 +50,7 @@ public class modificarCliente extends JFrame {
             JButton btnGuardar = new JButton("Guardar cambios"); //boton para guardar cambios
             panel.add(btnGuardar);
             
-            JButton btnEliminarCambios = new JButton("Salir sin guardar");  //boton para no guardar cambios
+            JButton btnEliminarCambios = new JButton("Salir sin modificar");  //boton para no guardar cambios
             panel.add(btnEliminarCambios);
             
             JButton btnEliminarCliente = new JButton("Eliminar cliente");  //Botón para eliminar cliente

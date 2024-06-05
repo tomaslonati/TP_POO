@@ -51,18 +51,20 @@ public class mainFrame extends JFrame {
         JMenu menuVentas = new JMenu("Ventas");
 
         // Crear ítems de menú
-        JMenuItem itemClientes = new JMenuItem("Administrar CLIENTES");
+        
+        //items menú clientes
         JMenuItem verClientes = new JMenuItem("Ver lista de clientes");
         JMenuItem addClientes = new JMenuItem("Agregar Cliente");
+        JMenuItem searchCliente = new JMenuItem("Buscar cliente con ID");
         
         JMenuItem itemPedidos = new JMenuItem("Administrar PEDIDOS");
         JMenuItem itemAutopartes = new JMenuItem("Administrar AUTOPARTES");
         JMenuItem itemVentas = new JMenuItem("Agregar Venta");
 
-        // Agregar ítems a los menús
-        menuClientes.add(itemClientes);
+        //Agregar ítems a los menús
         menuClientes.add(verClientes);
         menuClientes.add(addClientes);
+        menuClientes.add(searchCliente);
         
         menuPedidos.add(itemPedidos);
         menuAutopartes.add(itemAutopartes);
@@ -78,14 +80,8 @@ public class mainFrame extends JFrame {
         setJMenuBar(menuBar);
 
         // Vincular manejadores de eventos
-        itemClientes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ClienteFrame(listaClientes).setVisible(true);
-            }
-        });
         
-        // Vincular manejadores de eventos
+        // evento agregar cliente
         addClientes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,11 +89,19 @@ public class mainFrame extends JFrame {
             }
         });
         
-        // Vincular manejadores de eventos
+        // evento ver lista de clientes
         verClientes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new listaClientes(listaClientes).setVisible(true);
+            }
+        });
+        
+        // evento buscar cliente por su ID
+        searchCliente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new buscarCliente(listaClientes).setVisible(true);
             }
         });
   
