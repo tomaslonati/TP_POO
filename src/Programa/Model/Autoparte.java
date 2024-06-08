@@ -2,14 +2,11 @@ package Programa.Model;
 
 import java.io.Serializable;
 
-public class Autoparte implements Serializable{
+public class Autoparte extends Auto implements Serializable{
     private int codigo;
     private String denominacion;
     private String descripcion;
     private String categoria;
-    private String marca;
-    private String vehiculo;
-    private String modelo;
     private double precioUnitario;
     private String enlace;
     private int cantidadEnStock;
@@ -33,6 +30,10 @@ public class Autoparte implements Serializable{
     // Getters
     public int getCodigo() {
         return codigo;
+    }
+    @Override
+    public String toString() {
+        return denominacion; // Retorna el nombre de la autoparte para ser mostrado en el JComboBox
     }
 
     public String getDenominacion() {
@@ -119,4 +120,10 @@ public class Autoparte implements Serializable{
     public void setStockMinimo(int stockMinimo) {
         this.stockMinimo = stockMinimo;
     }
+    
+    public void devolverStock(int cantidad) {
+    	this.cantidadEnStock+=cantidad;
+    }
+
+    
 }

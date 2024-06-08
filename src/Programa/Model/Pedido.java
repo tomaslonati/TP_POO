@@ -5,54 +5,55 @@ import java.util.Date;
 import java.util.List;
 
 public class Pedido implements Serializable{
-    private List<ItemPedido> listaItems;
+    ListaItems listaItems;
     private int idCliente;
-    private Date fecha;
+    private String fecha;
     private double montoTotal;
     private int idPedido;
     private String estado;
 
     // Constructor
-    public Pedido(int idCliente, Date fecha, double montoTotal, int idPedido, String estado) {
-        this.listaItems = new ArrayList<>();
-        this.idCliente = idCliente;
+    public Pedido( String fecha,  int idPedido) {
+        this.listaItems = new ListaItems();
         this.fecha = fecha;
-        this.montoTotal = montoTotal;
         this.idPedido = idPedido;
-        this.estado = estado;
+        this.estado = "c";
+        this.montoTotal=0;
     }
 
     // Métodos para manejar la lista de ítems de pedido
     public void agregarItemPedido(ItemPedido item) {
-    	listaItems.add(item);
+    	listaItems.addItem(item);
+    	montoTotal+=item.getMontoTotal();
     }
 
     public void eliminarItemPedido(ItemPedido item) {
-    	listaItems.remove(item);
+    	listaItems.sacarItem(item);
     }
 
-    public List<ItemPedido> getListaItems() {
+    public ListaItems getListaItems() {
         return listaItems;
     }
 
-    public void setItemPedido(List<ItemPedido> listaItems) {
-        this.listaItems = listaItems;
-    }
 
     // Getters y Setters para los otros atributos
     public int getIdCliente() {
         return idCliente;
+    }
+    
+    public void setCliente(Cliente c) {
+    	this.idCliente=c.getIdCliente();
     }
 
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -78,6 +79,16 @@ public class Pedido implements Serializable{
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+    
+    //Busca autoparte en el pedido, devuelve el codigo propio si existe
+    public String autoparteEnPedido(int codigo) {
+    	String c = null;
+    	boolean e = listaItems.autoparteEnPedido(codigo);
+    	if(e==true) {
+    		c =  String.valueOf(this.idPedido);
+    		}
+    	return c;
     }
 }
 

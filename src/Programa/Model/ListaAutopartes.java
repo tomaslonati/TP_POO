@@ -1,11 +1,14 @@
 package Programa.Model;
 
 import java.io.Serializable;
+import Programa.Model.ListaPedidos;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListaAutopartes implements Serializable{
     private List<Autoparte> autopartes;
+
 
     // Constructor
     public ListaAutopartes() {
@@ -20,6 +23,21 @@ public class ListaAutopartes implements Serializable{
         }else {
         	System.out.println("El código de la autoparte ya existe "); //si ya existe, se informa error
         }
+    }
+    
+    public void modificarAutoparte(Autoparte a,String denominacion,String descripcion,String categoria,double precioUnitario,String enlace,int cantidadEnStock,int stockMinimo,String marca, String modelo, String vehiculo) {
+    	a.setCantidadEnStock(cantidadEnStock);
+    	a.setDenominacion(denominacion);
+    	a.setDescripcion(descripcion);
+    	a.setCantidadEnStock(cantidadEnStock);
+    	a.setCategoria(categoria);
+    	a.setStockMinimo(stockMinimo);
+    	a.setEnlace(enlace);
+    	a.setPrecioUnitario(precioUnitario);
+    	a.setMarca(marca);
+    	a.setModelo(modelo);
+    	a.setVehiculo(vehiculo);
+    	a.setCategoria(categoria);
     }
 
     public void eliminarAutoparte(Autoparte autoparte) {
@@ -45,6 +63,34 @@ public class ListaAutopartes implements Serializable{
     		}
     	}
     	return existe;
+    }
+    
+    //Recibe codigo como parámetro y devuelve autoparte correspondiente
+    public Autoparte autoparteConCodigo(int id) {
+    	Autoparte au = null;
+    	for (int i=0;i<autopartes.size();i++) {
+    		Autoparte a = autopartes.get(i);
+    		if (a.getCodigo()==id) {
+    			au = a;
+    			break;
+    		}
+    	}
+    	return au;
+    }
+    
+    public double pedirAutoparte(int codigo,int cantidad) {
+    	Autoparte a = autoparteConCodigo(codigo);
+    	if(a!=null) { //verificar que exista la autoparte
+    		if(a.getCantidadEnStock()>=cantidad) { //verificar stock
+    			a.setCantidadEnStock(a.getCantidadEnStock()-cantidad); //actualizar stock
+    			double monto = a.getPrecioUnitario()*cantidad; //obtener monto total
+    			return monto; //devolver monto total
+    		}else {
+        		return -1; //si no hay stock suficiente, se devuelve -1
+        		}
+    	}else {
+    		return -1; //si no existe la autoparte, se devuelve -1
+    		}
     }
 }
 

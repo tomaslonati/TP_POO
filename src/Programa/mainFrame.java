@@ -6,9 +6,15 @@ import Programa.Model.ListaPedidos;
 import Programa.Model.ListaAutopartes;
 import Programa.Model.ListaVentas;
 import Programa.View.*;
+import Programa.View.Autoparte.agregarAutoparte;
+import Programa.View.Autoparte.buscarAutoparte;
+import Programa.View.Autoparte.listadoAutopartes;
 import Programa.View.Cliente.agregarCliente;
 import Programa.View.Cliente.buscarCliente;
 import Programa.View.Cliente.listaClientes;
+import Programa.View.Pedido.abmItems;
+import Programa.View.Pedido.agregarPedido;
+import Programa.View.Pedido.listadoPedidos;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +42,20 @@ public class mainFrame extends JFrame {
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        
+        // Crear panel para el título y subtítulo
+        JPanel panelTitulo = new JPanel();
+        panelTitulo.setLayout(new BoxLayout(panelTitulo, BoxLayout.Y_AXIS));
+        panelTitulo.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
+
+        JLabel titulo = new JLabel("Bienvenido al sistema de gestión de autopartes");
+        titulo.setFont(new Font("Arial", Font.BOLD, 24));
+        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);    
+
+        panelTitulo.add(titulo);
+        panelTitulo.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre título y subtítulo
+        
+        add(panelTitulo, BorderLayout.NORTH);
 
         // Crear barra de menú
         JMenuBar menuBar = new JMenuBar();
@@ -45,6 +65,7 @@ public class mainFrame extends JFrame {
         JMenu menuPedidos = new JMenu("Pedidos");
         JMenu menuAutopartes = new JMenu("Autopartes");
         JMenu menuVentas = new JMenu("Ventas");
+        
 
         // Crear ítems de menú
         
@@ -53,19 +74,36 @@ public class mainFrame extends JFrame {
         JMenuItem addClientes = new JMenuItem("Agregar Cliente");
         JMenuItem searchCliente = new JMenuItem("Buscar cliente con ID");
         
-        JMenuItem itemPedidos = new JMenuItem("Administrar PEDIDOS");
-        JMenuItem itemAutopartes = new JMenuItem("Administrar AUTOPARTES");
-        JMenuItem itemVentas = new JMenuItem("Agregar Venta");
-
+        //items menú autopartes
+        JMenuItem verAutoparte = new JMenuItem("Ver lista de autopartes");
+        JMenuItem addAutoparte = new JMenuItem("Agregar autoparte");
+        JMenuItem searchAutoparte = new JMenuItem("Buscar autoparte con código");
+        
+        //items menú pedidos
+        JMenuItem verPedidos = new JMenuItem("Ver lista de pedidos");
+        JMenuItem agregarPedido = new JMenuItem("Agregar pedido");
+        JMenuItem searchPedido = new JMenuItem("Buscar pedido con código");
+        
+        
+        
         //Agregar ítems a los menús
+        
+        //agregar items menú clientes
         menuClientes.add(verClientes);
         menuClientes.add(addClientes);
         menuClientes.add(searchCliente);
         
-        menuPedidos.add(itemPedidos);
-        menuAutopartes.add(itemAutopartes);
-        menuVentas.add(itemVentas);
+        //agregar items menú autopartes
+        menuAutopartes.add(verAutoparte);
+        menuAutopartes.add(addAutoparte);
+        menuAutopartes.add(searchAutoparte);
+        
+        //agregar items menu pedidos
+        menuPedidos.add(agregarPedido);
+        menuPedidos.add(searchPedido);
+        menuPedidos.add(verPedidos);
 
+        
         // Agregar menús a la barra de menú
         menuBar.add(menuClientes);
         menuBar.add(menuPedidos);
@@ -75,8 +113,8 @@ public class mainFrame extends JFrame {
         // Configurar la barra de menú en el frame
         setJMenuBar(menuBar);
 
-        // Vincular manejadores de eventos
         
+        // Vincular manejadores de eventos de CLIENTES
         // evento agregar cliente
         addClientes.addActionListener(new ActionListener() {
             @Override
@@ -100,29 +138,51 @@ public class mainFrame extends JFrame {
                 new buscarCliente(listaClientes).setVisible(true);
             }
         });
-  
-
-        itemPedidos.addActionListener(new ActionListener() {
+        
+        // Vincular manejadores de eventos de AUTOPARTES
+        // evento agregar autoparte
+        addAutoparte.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PedidoFrame(listaPedidos).setVisible(true);
+                new agregarAutoparte(listaAutopartes).setVisible(true);
             }
         });
-
-        itemAutopartes.addActionListener(new ActionListener() {
+        
+        // evento ver lista de autopartes
+        verAutoparte.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AutoparteFrame(listaAutopartes).setVisible(true);
+                new listadoAutopartes(listaAutopartes,listaPedidos).setVisible(true);
             }
         });
-
-        itemVentas.addActionListener(new ActionListener() {
+        
+        // evento buscar cliente por su ID
+        searchAutoparte.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new VentaFrame(listaVentas).setVisible(true);
+                new buscarAutoparte(listaAutopartes,listaPedidos).setVisible(true);
             }
         });
-    }
+        
+        // Vincular manejadores de eventos de PEDIDOS
+        // evento agregar Pedido
+        agregarPedido.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new agregarPedido(listaAutopartes, listaPedidos,listaClientes,listaVentas).setVisible(true);
+            }
+        });
+        
+        // evento agregar Pedido
+        verPedidos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new listadoPedidos(listaPedidos).setVisible(true);
+            }
+        });
+        
+
+   }
 
     // Método principal para ejecutar la aplicación
     public static void main(String[] args) {

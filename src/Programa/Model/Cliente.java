@@ -31,6 +31,11 @@ public class Cliente implements Serializable{
     public String getNombre() {
         return nombre;
     }
+    
+    @Override
+    public String toString() {
+        return idCliente+" ("+nombre+")"; // Retorna el nombre de la autoparte para ser mostrado en el JComboBox
+    }
 
     public String getDireccion() {
         return direccion;
