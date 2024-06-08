@@ -5,14 +5,10 @@ import Programa.Model.ListaClientes;
 import Programa.Model.ListaPedidos;
 import Programa.Model.ListaAutopartes;
 import Programa.Model.ListaVentas;
-import Programa.View.ClienteFrame;
-import Programa.View.PedidoFrame;
-import Programa.View.AutoparteFrame;
-import Programa.View.VentaFrame;
-import Programa.View.agregarCliente;
-import Programa.View.listaClientes;
-
 import Programa.View.*;
+import Programa.View.Cliente.agregarCliente;
+import Programa.View.Cliente.buscarCliente;
+import Programa.View.Cliente.listaClientes;
 
 import javax.swing.*;
 import java.awt.*;

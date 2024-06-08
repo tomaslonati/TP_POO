@@ -1,10 +1,14 @@
-package Programa.View;
+package Programa.View.Cliente;
 
 import Programa.Model.Cliente;
 import Programa.Model.ListaClientes;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.layout.GridData;
 
 import Programa.View.*;
 
@@ -27,6 +31,22 @@ public class listaClientes extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         List<Cliente> clientes = listaClientes.obtenerClientes();
+        
+     // Crear panel para el título y subtítulo
+        JPanel panelTitulo = new JPanel();
+        panelTitulo.setLayout(new BoxLayout(panelTitulo, BoxLayout.Y_AXIS));
+        panelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+
+        JLabel subtitulo = new JLabel("Haga doble click en el cliente para modificar");
+        subtitulo.setFont(new Font("Arial", Font.PLAIN, 14));
+        subtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panelTitulo.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre título y subtítulo
+        panelTitulo.add(subtitulo);
+        
+        add(panelTitulo, BorderLayout.NORTH);
+
         
         // Crear columnas para la tabla
         String[] columnas = {"ID", "Nombre", "Dirección", "Teléfono", "Localidad", "Provincia", "Email"};
@@ -52,7 +72,8 @@ public class listaClientes extends JFrame {
             };
             tableModel.addRow(fila);
         }
-        
+
+		
         // Crear tabla
         JTable tablaClientes = new JTable(tableModel);
         
@@ -65,6 +86,8 @@ public class listaClientes extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+ 
+        
         
         // Agregar MouseListener para capturar eventos de doble clic
         tablaClientes.addMouseListener(new MouseAdapter() {

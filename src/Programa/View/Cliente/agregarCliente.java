@@ -1,4 +1,4 @@
-package Programa.View;
+package Programa.View.Cliente;
 
 import Programa.Model.Cliente;
 import Programa.Model.ListaClientes;
