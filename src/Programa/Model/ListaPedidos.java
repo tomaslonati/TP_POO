@@ -14,8 +14,9 @@ public class ListaPedidos implements Serializable{
     }
 
     // Métodos para manejar la lista de pedidos
-    public void agregarPedido(Pedido pedido) {
+    public void agregarPedido(Pedido pedido, ListaAutopartes listaAutopartes) {
         pedidos.add(pedido);
+        pedido.actualizaStockAutopartes(listaAutopartes);
     } 
     
     public String autoparteEnPedido(int codigo) {

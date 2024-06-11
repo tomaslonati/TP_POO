@@ -21,6 +21,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class agregarPedido extends JFrame {
     private ListaAutopartes listaAutopartes;
@@ -112,6 +114,68 @@ public class agregarPedido extends JFrame {
 
         // Crear un JScrollPane y agregar la tabla a él
         JScrollPane scrollPane = new JScrollPane(tablaItems);
+        
+        // Crar menú (va hacer click derecho en una fila a la tabla) 
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem eliminarItem = new JMenuItem("Eliminar Item");
+        JMenuItem modificarCantidad = new JMenuItem("Modificar Cantidad");
+        popupMenu.add(eliminarItem);
+        popupMenu.add(modificarCantidad);
+
+        // Agregar menú al hacer click derecho en una fila a la tabla
+        tablaItems.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    int row = tablaItems.rowAtPoint(e.getPoint());
+                    int column = tablaItems.columnAtPoint(e.getPoint());
+                    if (row >= 0 && column >= 0) {
+                        tablaItems.setRowSelectionInterval(row, row);
+                        popupMenu.show(tablaItems, e.getX(), e.getY());
+                    }
+                }
+            }
+        });
+
+        // Agregar acciones para los elementos del menú contextual
+        eliminarItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = tablaItems.getSelectedRow(); //obtener fila seleccionada por el usuatio
+                if (selectedRow != -1) {
+                	int idItem = Integer.parseInt(tablaItems.getValueAt(selectedRow, 1).toString()); //id de la fila seleccionada
+                    ItemPedido item =listaItems.itemConId(idItem); //obtener obj item con su id
+                    p.eliminarItemPedido(item); //eliminar item del pedido
+                    actualizarMontoTotal(p); //actualizar el monto total en LA INTERFAZ
+                    tableModel.removeRow(selectedRow); //eliminar fila de LA INTERFAZ
+                }
+            }
+        });
+
+        modificarCantidad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = tablaItems.getSelectedRow(); //obtener fila seleccionada por el usuatio
+                if (selectedRow != -1) {
+                    String nuevaCantidadStr = JOptionPane.showInputDialog(agregarPedido.this, "Ingrese la nueva cantidad:");
+                    try {
+                        int nuevaCantidad = Integer.parseInt(nuevaCantidadStr);
+                    	int idItem = Integer.parseInt(tablaItems.getValueAt(selectedRow, 1).toString());
+                        if (nuevaCantidad > 0 && listaAutopartes.pedirAutoparte(idItem, nuevaCantidad)!=-1) {
+                            tableModel.setValueAt(nuevaCantidad, selectedRow, 2);
+                            ItemPedido item =listaItems.itemConId(idItem);
+                            p.modificarCantItemPedido(item, nuevaCantidad);
+                            tableModel.setValueAt(String.valueOf(item.getMontoTotal()), selectedRow, 3);
+                            actualizarMontoTotal(p);
+                        } else {
+                            JOptionPane.showMessageDialog(agregarPedido.this, "No hay stock suficiente");
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(agregarPedido.this, "Por favor, ingrese un número válido.");
+                    }
+                }
+            }
+        });
 
         // Crear botón para agregar item
         JButton addButton = new JButton("Agregar autoparte");
@@ -133,7 +197,7 @@ public class agregarPedido extends JFrame {
 
         setVisible(true);
 
-        // Evento para agregar autoparte al pedido
+        // Evento para agregar autoparte () al pedido
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,7 +218,7 @@ public class agregarPedido extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listaPedidos.agregarPedido(p);
+                listaPedidos.agregarPedido(p,listaAutopartes);//agregar el pedido a la lista
                 int response = JOptionPane.showConfirmDialog(null,
             		    "¿Desea continuar con la venta?",
             		    "Realizar venta",
@@ -168,6 +232,22 @@ public class agregarPedido extends JFrame {
                 else if(response == JOptionPane.NO_OPTION) {
                     dispose();
                 }
+            }
+        });
+        
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(null,
+            		    "¿Estas seguro que desea cancelar el pedido?",
+            		    "Cancelar pedido",
+            		    JOptionPane.YES_NO_OPTION,
+            		    JOptionPane.WARNING_MESSAGE);
+                
+                if (response == JOptionPane.YES_OPTION) {
+                    dispose();
+                }
+ 
             }
         });
     }

@@ -7,12 +7,14 @@ public class ItemPedido implements Serializable{
     private int cantidad;
     private double montoTotal;
     private String nombre;
+    Autoparte a;
 
     // Constructor
     public ItemPedido(Autoparte A, int cantidad) {
         this.idAutoparte = A.getCodigo();
         this.nombre=A.getDenominacion();
         this.cantidad = cantidad;
+        this.a=A;
         this.montoTotal=A.getPrecioUnitario()*cantidad;
     }
 
@@ -41,6 +43,12 @@ public class ItemPedido implements Serializable{
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+        double nuevoMonto = a.getPrecioUnitario()*cantidad;
+        this.setMontoTotal(nuevoMonto);
+    }
+    
+    public void setMontoTotal(double mt) {
+    	this.montoTotal=mt;
     }
 }
 

@@ -28,8 +28,23 @@ public class Pedido implements Serializable{
     }
 
     public void eliminarItemPedido(ItemPedido item) {
+    	montoTotal-=item.getMontoTotal();
     	listaItems.sacarItem(item);
     }
+    
+    public void modificarCantItemPedido(ItemPedido item, int cant) {
+    	montoTotal-=item.getMontoTotal(); //restar cantidad anterior del monto total
+    	listaItems.modificarCantidad(item, cant);
+    	montoTotal+=item.getMontoTotal(); //actualizar monto total con la nueva cantidad
+    }
+    
+ 
+    public void actualizaStockAutopartes(ListaAutopartes listaAutopartes) {
+        for (ItemPedido item : listaItems.obtenerItems()) {
+            listaAutopartes.descontarStock(item.getIdAutoparte(), item.getCantidad());
+        }
+    }
+
 
     public ListaItems getListaItems() {
         return listaItems;
