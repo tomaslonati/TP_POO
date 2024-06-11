@@ -72,9 +72,11 @@ public class listadoPedidos extends JFrame {
                     if (selectedRow != -1) {
                         int idPedido = Integer.parseInt(tablaPedidos.getValueAt(selectedRow, 0).toString());
                         Pedido pedido = listaPedidos.pedidoConId(idPedido);
-                        if (pedido != null) {
+                        if (pedido != null && pedido.getEstado()=="c") {
                         	dispose();
                         	new modificarPedido(listaAutopartes, listaPedidos, listaClientes, listaVentas, pedido).setVisible(true);
+                        }else {
+                            JOptionPane.showMessageDialog(listadoPedidos.this, "Solo se pueden mofificar pedidos en estado C");
                         }
                     }
                 }

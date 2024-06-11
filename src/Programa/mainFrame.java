@@ -14,6 +14,7 @@ import Programa.View.Cliente.buscarCliente;
 import Programa.View.Cliente.listaClientes;
 import Programa.View.Pedido.abmItems;
 import Programa.View.Pedido.agregarPedido;
+import Programa.View.Pedido.buscarPedido;
 import Programa.View.Pedido.listadoPedidos;
 
 import javax.swing.*;
@@ -173,11 +174,19 @@ public class mainFrame extends JFrame {
             }
         });
         
-        // evento agregar Pedido
+        // evento ver Pedido
         verPedidos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new listadoPedidos(listaAutopartes, listaPedidos,listaClientes,listaVentas).setVisible(true);
+            }
+        });
+        
+        // evento buscar Pedido
+        searchPedido.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new buscarPedido(listaAutopartes, listaPedidos,listaClientes,listaVentas).setVisible(true);
             }
         });
         
