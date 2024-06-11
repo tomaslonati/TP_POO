@@ -85,6 +85,13 @@ public class ListaAutopartes implements Serializable{
     	}
     }
     
+    public void devolverStock (int codigo,int cantidad) {
+    	Autoparte a = autoparteConCodigo(codigo);
+    	if (a!=null) {
+			a.setCantidadEnStock(a.getCantidadEnStock()+cantidad); //actualizar stock
+    	}
+    }
+    
     public double pedirAutoparte(int codigo,int cantidad) {
     	Autoparte a = autoparteConCodigo(codigo);
     	if(a!=null) { //verificar que exista la autoparte

@@ -1,17 +1,22 @@
 package Programa.View.Pedido;
 
+import Programa.Model.ListaAutopartes;
+import Programa.Model.ListaClientes;
 import Programa.Model.ListaPedidos;
+import Programa.Model.ListaVentas;
 import Programa.Model.Pedido;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class listadoPedidos extends JFrame {
     private ListaPedidos listaPedidos;
     private DefaultTableModel tableModel;
 
-    public listadoPedidos(ListaPedidos listaPedidos) {
+    public listadoPedidos(ListaAutopartes listaAutopartes, ListaPedidos listaPedidos, ListaClientes listaClientes, ListaVentas listaVentas) {
         this.listaPedidos = listaPedidos;
 
         // Configurar la ventana
@@ -58,13 +63,23 @@ public class listadoPedidos extends JFrame {
         add(panelTabla);
 
         setVisible(true);
+        
+        tablaPedidos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedRow = tablaPedidos.getSelectedRow();
+                    if (selectedRow != -1) {
+                        int idPedido = Integer.parseInt(tablaPedidos.getValueAt(selectedRow, 0).toString());
+                        Pedido pedido = listaPedidos.pedidoConId(idPedido);
+                        if (pedido != null) {
+                        	dispose();
+                        	new modificarPedido(listaAutopartes, listaPedidos, listaClientes, listaVentas, pedido).setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    public static void main(String[] args) {
-        // Este es solo un ejemplo de cómo inicializar la lista de pedidos
-        ListaPedidos listaPedidos = new ListaPedidos();
-
-        // Crear instancia de la ventana para ver el listado de pedidos
-        new listadoPedidos(listaPedidos);
-    }
 }

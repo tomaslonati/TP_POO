@@ -45,6 +45,12 @@ public class Pedido implements Serializable{
         }
     }
 
+    public void revertirStockAutopartes(ListaAutopartes listaAutopartes) {
+        for (ItemPedido item : listaItems.obtenerItems()) {
+            listaAutopartes.devolverStock(item.getIdAutoparte(), item.getCantidad());
+        }
+    }
+
 
     public ListaItems getListaItems() {
         return listaItems;

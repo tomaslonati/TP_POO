@@ -19,6 +19,33 @@ public class ListaPedidos implements Serializable{
         pedido.actualizaStockAutopartes(listaAutopartes);
     } 
     
+    public void actualizarPedido(Pedido pedido, ListaAutopartes listaAutopartes) {
+        // Buscar el índice del pedido en la lista de pedidos
+        int index = -1;
+        for (int i = 0; i < pedidos.size(); i++) {
+            if (pedidos.get(i).getIdPedido() == pedido.getIdPedido()) {
+                index = i;
+                break;
+            }
+        }
+
+        // Si se encuentra el pedido, actualizarlo
+        if (index != -1) {
+            // Recuperar el pedido original para revertir el stock de autopartes
+            Pedido pedidoOriginal = pedidos.get(index);
+
+            // Revertir el stock de autopartes del pedido original
+            pedidoOriginal.revertirStockAutopartes(listaAutopartes);
+
+            // Actualizar el pedido en la lista
+            pedidos.set(index, pedido);
+
+            // Actualizar el stock de autopartes del pedido actualizado
+            pedido.actualizaStockAutopartes(listaAutopartes);
+        }
+    }
+
+    
     public String autoparteEnPedido(int codigo) {
     	String pedidosConAutoparte = null;
     	for (int i=0;i<pedidos.size();i++) {
@@ -33,6 +60,19 @@ public class ListaPedidos implements Serializable{
     public void eliminarPedido(Pedido pedido) {
         pedidos.remove(pedido);
     }
+    
+    public Pedido pedidoConId(int id) {
+    	Pedido pedido = null;
+    	for (int i=0;i<pedidos.size();i++) {
+    		Pedido p = pedidos.get(i);
+    		if (p.getIdPedido()==id) {
+    			pedido=p;
+    			break;
+    		}
+    	}
+    	return pedido;
+    }
+    
 
     public List<Pedido> obtenerPedidos() {
         return pedidos;

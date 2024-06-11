@@ -177,7 +177,7 @@ public class mainFrame extends JFrame {
         verPedidos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new listadoPedidos(listaPedidos).setVisible(true);
+                new listadoPedidos(listaAutopartes, listaPedidos,listaClientes,listaVentas).setVisible(true);
             }
         });
         
